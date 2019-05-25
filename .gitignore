@@ -1,0 +1,6 @@
+.shadow-cljs
+target/
+resources/public/js/compiled
+.nrepl-port
+node_modules/
+.cljs_rhino_repl/
