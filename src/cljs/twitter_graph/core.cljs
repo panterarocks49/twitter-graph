@@ -3,15 +3,51 @@
 
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:text "Hello world!"}))
+(defn new-board [n]
+  (vec (repeat n (vec (repeat n 0)))))
 
-(defn hello-world []
-  [:div
+
+
+(defonce app-state
+  (atom {:text "Welcome to tic tac toe"
+         :board (new-board 3)}))
+
+
+
+(defn tictactoe []
+  [:center
    [:h1 (:text @app-state)]
-   [:h3 "Edit this and watch it change!"]])
+   [:svg
+    {:view-box "0 0 3 3"
+     :width    500
+     :hieght   500}
+    
+
+   (doall (for [i (range (count (:board @app-state)))
+          j (range (count (:board @app-state)))]
+      [:rect {:width  0.9
+              :height 0.9
+              :x      i
+              :y      j
+              :on-click
+              (fn [e]
+                (println "You clicked me!" i j)
+                (swap! app-state update-in [:board j i] inc))}]))]])
+
+
+
+
+
+
+
+
+
+
+
+
 
 (defn start []
-  (reagent/render-component [hello-world]
+  (reagent/render-component [tictactoe]
                             (. js/document (getElementById "app"))))
 
 (defn ^:export init []
@@ -24,3 +60,8 @@
   ;; stop is called before any code is reloaded
   ;; this is controlled by :before-load in the config
   (js/console.log "stop"))
+
+
+
+
+
